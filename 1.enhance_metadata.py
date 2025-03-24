@@ -1,9 +1,6 @@
-import shutil
-from datetime import datetime
 import traceback
 import pandas as pd
 from pathlib import Path
-from natsort import natsorted
 
 from src.utils import populate_annotation, get_code_benthic
 

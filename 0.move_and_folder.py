@@ -1,8 +1,8 @@
 import shutil
-from datetime import datetime
 import traceback
 import pandas as pd
 from pathlib import Path
+from datetime import datetime
 from natsort import natsorted
 
 from src.utils import get_cpce_folder, get_frame_folder, get_coordinates, match_framename_cpce_file

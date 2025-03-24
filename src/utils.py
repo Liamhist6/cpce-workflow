@@ -1,5 +1,3 @@
-import shutil
-import traceback
 import pandas as pd
 import geopandas as gpd
 from pathlib import Path
