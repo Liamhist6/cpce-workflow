@@ -133,6 +133,7 @@ def populate_annotation(cpce_folder: Path, df_metadata: pd.DataFrame, mapping_la
             for row in file:
                 if 'Notes' not in row: continue
                 label = row.replace("\n", "").split('","')[1]
+                if label == '': continue
                 if label not in label_points:
                     label_points[label] = 0
                 label_points[label] += 1

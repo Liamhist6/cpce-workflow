@@ -7,9 +7,9 @@ from natsort import natsorted
 
 from src.utils import get_cpce_folder, get_frame_folder, get_coordinates, match_framename_cpce_file
 
-DATASET = Path("F:/", "cpce-workflow-victor", "dataset", "raw_data_aina", "raw_data")
+DATASET = Path("F:/", "cpce-workflow-victor", "dataset", "raw_data_amoros", "raw_data")
 OUTPUT_DIR = Path("F:/", "CLEAN_DATA")
-CPCE_CODE = Path("CPCe_benthic_codes_mada.txt")
+CPCE_CODE = Path("cpce_codes_mada_40.txt")
 
 def main():
     if not DATASET.exists() or not DATASET.is_dir():
@@ -82,12 +82,14 @@ def main():
                     image_number = str(i + 1).rjust(4, '0')
                     file_name = f"{formatted_date}_MDG-{place.name}_UVC-01_{session_number}_{image_number}.jpeg"
                     relative_file_path = f"{session_name}/DCIM/{img_path.name}"
-                    
+                    datetime_formatted = datetime.strptime(row["Date"], "%d/%m/%Y %H:%M:%S").strftime("%Y:%m:%d %H:%M:%S")
+
                     metadata_row = {
                         "OriginalFileName": img_path.name,
                         "FileName": file_name,
                         "GPSLatitude": row["Latitude"],
                         "GPSLongitude": row["Longitude"],
+                        "DateTime": datetime_formatted,
                         "relative_file_path": relative_file_path
                     }
 
@@ -101,6 +103,8 @@ def main():
             except Exception as e:
                 print(f"Error processing {transect_name}: {e}")
                 print(traceback.format_exc(), end="\n\n")
+            
+       
 
 if __name__ == "__main__":
     main()

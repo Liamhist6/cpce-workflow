@@ -12,7 +12,7 @@ def main():
         print("Dataset does not exist", DATASET)
         return
     
-    codes_benthic = get_code_benthic(Path("CPCe_benthic_codes_mada.txt"))
+    codes_benthic = get_code_benthic(Path("cpce_codes_mada_40.txt"))
 
     for session in sorted(list(DATASET.iterdir())):
         try:
@@ -24,23 +24,24 @@ def main():
                 continue
 
             metadata_path = Path(session, "METADATA", "metadata.csv")
-            metadata_path2 = Path(session, "METADATA", "metadata2.csv")
 
             if not metadata_path.exists() or not metadata_path.is_file():
                 print(f"{metadata_path} not found")
                 continue
 
             metadata_df = pd.read_csv(metadata_path)
+
+            # To avoid reprocessing same file multiple time, we check for column NB_POints and if exist we continue
+            if "Nb_Points" in list(metadata_df): continue 
             
             metadata_df = populate_annotation(CPCE_FOLDER, metadata_df, codes_benthic)
-            metadata_df.to_csv(metadata_path2, index=False)
+            metadata_df.to_csv(metadata_path, index=False)
                 
             print(f"Session {session.name} processed successfully.\n")
         except Exception as e:
             print(f"Error processing {session.name}: {e}")
             print(traceback.format_exc(), end="\n\n")
-        
-        break
+       
 
 if __name__ == "__main__":
     main()
