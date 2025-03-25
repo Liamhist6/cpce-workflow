@@ -104,7 +104,5 @@ def main():
                 print(f"Error processing {transect_name}: {e}")
                 print(traceback.format_exc(), end="\n\n")
             
-       
-
 if __name__ == "__main__":
     main()
