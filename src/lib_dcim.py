@@ -10,6 +10,9 @@ from .lib_tools import linear_interpolation
 
 def time_calibration_and_geotag(path_manager: PathManager):
 
+    print("Get images metadata")
+
+
     # Get metadata of frames
     with exiftool.ExifTool(common_args=["-n"]) as et:
         json_frames_metadata = et.execute(*[f"-j", "-fileorder", "filename", str(path_manager.dcim_folder)])
@@ -53,7 +56,7 @@ def time_calibration_and_geotag(path_manager: PathManager):
             lon_interp = linear_interpolation(lower_row["GPSLongitude"], higher_row["GPSLongitude"], lower_row["datetime_unix"], higher_row["datetime_unix"], dt_utc_timestamp)
             return f'{lat_interp}, {lon_interp}'
 
-
+    print("Compute image gps position")
     csv_exiftool_frames["GPSPosition"] = csv_exiftool_frames.apply(lambda x: find_gps_position(x), axis=1)
     csv_exiftool_frames["GPSLatitude"] = csv_exiftool_frames.apply(lambda x: x["GPSPosition"].split(", ")[0], axis=1)
     csv_exiftool_frames["GPSLongitude"] = csv_exiftool_frames.apply(lambda x: x["GPSPosition"].split(", ")[1], axis=1)
